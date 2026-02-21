@@ -21,12 +21,26 @@
                                     <template v-if = isActive>
                                         <v-card :title = filename>
                                             <template v-if = 'filename in f.urls'>
-                                                <a :href = 'f.urls[filename][0]'>
-                                                    <v-card variant = tonal title = Code />
-                                                </a>
-                                                <a :href = 'f.urls[filename][1]'>
-                                                    <v-card variant = tonal title = Problem />
-                                                </a>
+                                                <v-row>
+                                                    <v-col>
+                                                        <a :href = 'f.urls[filename][0]' class = text-center>
+                                                            <v-hover>
+                                                                <template #default = '{isHovering, props}'>
+                                                                    <v-card variant = tonal title = Code v-bind = props :color = 'isHovering ? `orange` : undefined' prepend-icon = 'fa-solid fa-code' />
+                                                                </template>
+                                                            </v-hover>
+                                                        </a>
+                                                    </v-col>
+                                                    <v-col>
+                                                        <a :href = 'f.urls[filename][1]' class = text-center>
+                                                            <v-hover>
+                                                                <template #default = '{isHovering, props}'>
+                                                                    <v-card variant = tonal title = Problem v-bind = props :color = 'isHovering ? `orange` : undefined' prepend-icon = 'fa-solid fa-book' />
+                                                                </template>
+                                                            </v-hover>
+                                                        </a>
+                                                    </v-col>
+                                                </v-row>
                                             </template>
                                         </v-card>
                                     </template>
@@ -91,9 +105,9 @@ const goto = (x) => {
     const get_url = (code) => {
         var now = code.split('\n', 3);
         if(now.length < 3) return null;
-        now = now[2];
+        var x = now[2];
         
-       var t = /^(?:#|\/\/)(.+)$/g;
+       var t = /^(?:#|\/\/) (.+)$/;
        if(!t.test(x)) return null;
 
        return t.exec(x)[1];
