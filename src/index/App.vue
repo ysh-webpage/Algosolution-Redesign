@@ -1,6 +1,11 @@
 <template>
     <v-app>
         <v-main>
+            <img src = 'https://citrc.tw/HARC.png' max-width = 500px max-height = 500px class = logo id = logo />
+            <img src = 'https://citrc.tw/HARC.png' max-width = 500px max-height = 500px class = logo id = logo-base />
+            <div id = circle />
+            <v-card align = center variant = text width = 100vw height = 90vh>
+            </v-card>
             <v-container>
                 <v-row>
                     <template v-for = 'time, filename in f.mc' :key = time>
@@ -42,6 +47,9 @@
                                                     </v-col>
                                                 </v-row>
                                             </template>
+                                            <template v-else>
+                                                <v-card title = Loading class = blur />
+                                            </template>
                                         </v-card>
                                     </template>
                                 </template>
@@ -60,7 +68,7 @@ import M from 'materialize-css'
 import {ref, onMounted} from 'vue'
 
 // import { useDisplay } from 'vuetify'
-// import { animate, stagger, onScroll, text } from 'animejs';
+import { animate, stagger, onScroll, text } from 'animejs';
 
 const test = ref(0);
 const urls = {
@@ -128,11 +136,58 @@ onMounted(() => {
         tmp.value[i] = response.trim().split('\n').map((x) => x.split('\t'));
         ok();
     })
+
+    animate('#logo-base', {
+        filter: [
+            {to: 'blur(0px)'},
+            {to: 'blur(50px)'}
+        ],
+        loop: true,
+        duration: 5000
+    })
+
+    animate('#circle', {
+        scale: [5, 1, 5],
+        opacity: [.1, 1, .1],
+        loop: true,
+        duration: 5000
+    })
+    stagger;
+    text;
+    onScroll;
 })
 </script>
 
 <style>
-* {
+/* * {
   transition: 1s all;
+} */
+.blur {
+    filter: blur(50px);
+}
+.cover {
+    width: 100vw;
+    height: 90vh;
+}
+.logo {
+    height: 500px;
+    width: 500px;
+    left: calc(50vw - 250px);
+    top: calc(45vh - 250px);
+    position: absolute;
+}
+#logo-base {
+    filter: blur(50px);
+    z-index: -1;
+}
+#circle {
+    background-color: rgba(255, 255, 255, .75);
+    border-radius: 50%;
+    position: absolute;
+    top: calc(45vh - 50px);
+    left: calc(50vw - 50px);
+    width: 100px;
+    height: 100px;
+    z-index: -2;
 }
 </style>
